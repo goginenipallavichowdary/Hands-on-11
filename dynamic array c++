@@ -1,0 +1,99 @@
+#include <iostream>
+using namespace std;
+
+class ResizableArray {
+private:
+    int* data;        
+    int maxCapacity;   
+    int currentSize;   
+
+
+    void expand() {
+        maxCapacity *= 2;  
+        int* tempArray = new int[maxCapacity];
+        
+       
+        for (int i = 0; i < currentSize; i++) {
+            tempArray[i] = data[i];
+        }
+
+        delete[] data;  
+        data = tempArray;  
+    }
+
+public:
+    
+    ResizableArray() : maxCapacity(2), currentSize(0) {
+        data = new int[maxCapacity];
+    }
+
+    
+    ~ResizableArray() {
+        delete[] data;
+    }
+
+    
+    void insert(int element) {
+        if (currentSize == maxCapacity) {
+            expand();
+        }
+        data[currentSize++] = element;
+    }
+
+    
+    int retrieve(int idx) {
+        if (idx < 0 || idx >= currentSize) {
+            cout << "Index out of range" << endl;
+            return -1;
+        }
+        return data[idx];
+    }
+
+   
+    void printElements() {
+        for (int i = 0; i < currentSize; i++) {
+            cout << data[i] << " ";
+        }
+        cout << endl;
+    }
+
+    
+    int getCount() {
+        return currentSize;
+    }
+
+    
+    int getMaxCapacity() {
+        return maxCapacity;
+    }
+};
+
+int main() {
+    ResizableArray resizableArray;
+
+   
+    resizableArray.insert(20);
+    resizableArray.insert(40);
+    resizableArray.insert(80);
+    resizableArray.insert(100);
+
+    
+    cout << "Array elements: ";
+    resizableArray.printElements();
+
+    
+    cout << "Size: " << resizableArray.getCount() << endl;
+    cout << "Capacity: " << resizableArray.getMaxCapacity() << endl;
+
+    
+    int idx = 2;
+    cout << "Element at index " << idx << ": " << resizableArray.retrieve(idx) << endl;
+
+    return 0;
+}
+
+### Output
+Array elements: 20 40 80 100 
+Size: 4
+Capacity: 4
+Element at index 2: 80 ###
